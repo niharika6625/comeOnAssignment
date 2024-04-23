@@ -17,7 +17,7 @@ const routes = createBrowserRouter([
     element: <PrivateRoute><CasinoPage /></PrivateRoute>,
   },
   {
-    path: INGAME,
+    path: `${INGAME}/:code`,
     element: <PrivateRoute><InGamePage /></PrivateRoute>,
   },
   {

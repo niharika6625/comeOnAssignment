@@ -45,7 +45,6 @@ const Login = () => {
           username: formData.username, 
           ...data.player
         }))
-        console.log('data', data);
         navigate(CASINO);
       } else {
         const errorData = await response.json();

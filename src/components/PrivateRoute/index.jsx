@@ -8,7 +8,6 @@ const PrivateRoute = ({children}) => {
     useEffect(() => {
         let tempLogin = localStorage.getItem('auth') ? JSON.parse(localStorage.getItem('auth')) : false;
         if(!tempLogin){
-            console.log('tempLogin1', tempLogin)
             navigate(LOGIN)
         }
     }, [navigate])

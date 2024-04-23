@@ -3,15 +3,20 @@ import { useNavigate } from "react-router-dom";
 import "../../assets/css/styles.css";
 import { ROUTE_PATH } from "../../helper/constants";
 
-const { LOGIN } = ROUTE_PATH;
+const { LOGIN, INGAME } = ROUTE_PATH;
 
 const Casino = () => {
   const [userData, setUserData] = useState({});
   const [gamesData, setGamesData] = useState([]);
   const [categoriesData, setCategoriesData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(1);
 
   const navigate = useNavigate();
+
+  const handlePlay = async (gameCode) => {
+    navigate(INGAME + "/" + gameCode);
+  };
 
   useEffect(() => {
     const userData = localStorage.getItem("auth")
@@ -63,13 +68,21 @@ const Casino = () => {
     }
   };
 
-  const filteredGames = gamesData.filter((game) =>
-    game.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredGames = gamesData
+    .filter((game) =>
+      game.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .filter((item) =>
+      selectedCategory ? item.categoryIds.includes(selectedCategory) : true
+    );
 
   const filteredCategories = categoriesData.filter((category) =>
     category.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleCategorySelect = (catId) => {
+    setSelectedCategory(catId);
+  };
 
   return (
     <div className="casino">
@@ -118,24 +131,28 @@ const Casino = () => {
 
           <div className="ui relaxed divided game items links">
             {/* game item template */}
-            {filteredGames.map(game => (
-            <div className="game item">
-              <div className="ui small image">
-                <img src="" alt="game-icon" />
-              </div>
-              <div className="content">
-                <div className="header">
-                  <b className="name">{game.name}</b>
+
+            {filteredGames.map((game) => (
+              <div className="game item">
+                <div className="ui small image">
+                  <img src="" alt="game-icon" />
                 </div>
-                <div className="description">{game.description}</div>
-                <div className="extra">
-                  <div className="play ui right floated secondary button inverted">
-                    Play
-                    <i className="right chevron icon"></i>
+                <div className="content">
+                  <div className="header">
+                    <b className="name">{game.name}</b>
+                  </div>
+                  <div className="description">{game.description}</div>
+                  <div className="extra">
+                    <div
+                      className="play ui right floated secondary button inverted"
+                      onClick={() => handlePlay(game.code)}
+                    >
+                      Play
+                      <i className="right chevron icon"></i>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
             ))}
             {/* end game item template */}
           </div>
@@ -145,12 +162,20 @@ const Casino = () => {
 
           <div className="ui selection animated list category items">
             {/* category item template */}
-            {filteredCategories.map(category => (
-            <div className="category item">
-              <div className="content">
-                <div className="header">{category.name}</div>
+
+            {filteredCategories.map((category) => (
+              <div className="category item">
+                <div className="content">
+                  <div
+                    className={`header ${
+                      category.id === setSelectedCategory ? "active" : ""
+                    }`}
+                    onClick={() => handleCategorySelect(category.id)}
+                  >
+                    {category.name}
+                  </div>
+                </div>
               </div>
-            </div>
             ))}
             {/* end category item template */}
           </div>
