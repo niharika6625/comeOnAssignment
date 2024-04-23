@@ -1,24 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
-
+import "./assets/css/styles.css";
+import {
+  RouterProvider,
+} from 'react-router-dom';
+import logo from "../src/assets/images/logo.svg";
+import routes from './routes/index.js'
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="ui one column center aligned page grid">
+        <div className="column twelve wide">
+          <img src={logo} alt="logo" />
+        </div>
+      </div>
+      <div className="main container">
+        <RouterProvider router={routes} />
+      </div>
+    </>
   );
 }
 
