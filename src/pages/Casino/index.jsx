@@ -1,7 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import "../../assets/css/styles.css";
+import { ROUTE_PATH } from '../../helper/constants';
+
+const { LOGIN } = ROUTE_PATH;
 
 const Casino = () => {
+  const [userData, setUserData] = useState({})
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userData = localStorage.getItem('auth') ? JSON.parse(localStorage.getItem('auth')) : null;
+    setUserData(userData);
+  }, [])
+
+  const handleLogout  = async () => {
+    try {
+      const userData = localStorage.getItem('auth') ? JSON.parse(localStorage.getItem('auth')) : null;
+      console.log('Username:', userData);
+      const response = await fetch('http://localhost:3001/logout', {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username: userData.username })
+      });
+      console.log('Response:', response);
+      if(response.ok) {
+        localStorage.setItem('isLogin', false);
+        navigate(LOGIN);
+      }else {
+        throw new Error ('Failed to Logout!');
+      }
+    }catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
   return (
     <div className="casino">
       <div className="ui grid centered">
@@ -9,7 +46,7 @@ const Casino = () => {
           <div className="ui list">
             {/* player item template */}
             <div className="player item">
-              <img className="ui avatar image" src="" alt="avatar" />
+              <img className="ui avatar image" src={userData.avatar} alt="avatar" />
 
               <div className="content">
                 <div className="header">
@@ -20,8 +57,8 @@ const Casino = () => {
             </div>
             {/* end player item template */}
           </div>
-          <div className="logout ui left floated secondary button inverted">
-            <i className="left chevron icon"></i>Log Out
+          <div className="logout ui left floated secondary button inverted" onClick={() => handleLogout()}>
+            <i className="left chevron icon" ></i>Log Out
           </div>
         </div>
         <div className="four wide column">

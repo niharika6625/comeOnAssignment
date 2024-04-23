@@ -1,0 +1,10 @@
+.login .error {
+    font-size: 8px;
+    color: red;
+    text-align: left;
+    margin-left: 360px;
+    margin-right: 360px
+}
+.login .error.message{
+    font-size: 8px;
+}

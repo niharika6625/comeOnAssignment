@@ -9,7 +9,7 @@ function App() {
     <>
       <div className="ui one column center aligned page grid">
         <div className="column twelve wide">
-          <img src={logo} alt="logo" />
+          <img src={logo} alt="logo" className="logo-animation"/>
         </div>
       </div>
       <div className="main container">

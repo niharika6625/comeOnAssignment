@@ -31766,3 +31766,15 @@ html.ios {
 /*******************************
          Site Overrides
 *******************************/
+.logo-animation {
+    animation: slideFromLeft 1s ease forwards; /* Slide in from left over 1 second */
+  }
+  
+  @keyframes slideFromLeft {
+    from {
+      transform: translateX(-100%); /* Start off-screen to the left */
+    }
+    to {
+      transform: translateX(0); /* Slide to the original position */
+    }
+  }
