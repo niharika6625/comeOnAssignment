@@ -1,57 +1,59 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import './login.css';
-import { ROUTE_PATH } from '../../helper/constants';
+import "./login.css";
+import { ROUTE_PATH } from "../../helper/constants";
 
 const { CASINO } = ROUTE_PATH;
 
 const Login = () => {
-
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
-    password: ""
+    password: "",
   });
   const [errors, setErrors] = useState({});
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    localStorage.removeItem('auth')
-  }, [])
+    localStorage.removeItem("auth");
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:3001/login', {
-        method: 'post',
+      const response = await fetch("http://localhost:3001/login", {
+        method: "post",
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('auth', JSON.stringify({
-          username: formData.username, 
-          ...data.player
-        }))
+        localStorage.setItem(
+          "auth",
+          JSON.stringify({
+            username: formData.username,
+            ...data.player,
+          })
+        );
         navigate(CASINO);
       } else {
         const errorData = await response.json();
         throw new Error(errorData.error);
       }
     } catch (error) {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
       setError(error.message);
     }
   };
@@ -92,7 +94,9 @@ const Login = () => {
                 />
                 <i className="user icon"></i>
               </div>
-              {errors.username && <div className="error">{errors.username}</div>}
+              {errors.username && (
+                <div className="error">{errors.username}</div>
+              )}
             </div>
             <div className="required field">
               <div className="ui icon input">
@@ -105,15 +109,17 @@ const Login = () => {
                 />
                 <i className="lock icon"></i>
               </div>
-              {errors.password && <div className="error">{errors.password}</div>}
+              {errors.password && (
+                <div className="error">{errors.password}</div>
+              )}
             </div>
-             {error && <div className="ui error message">{error}</div>} 
+            {error && <div className="ui error message">{error}</div>}
             <div className="field">
               <div className="ui icon input">
-                <button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? "Logging in..." : "Login"}
+                <button type="submit" disabled={isSubmitting} class="login-button">
+                  <span>{isSubmitting ? "Logging in..." : "Login"}</span>
+                  <i class="right chevron icon"></i>
                 </button>
-                <i class="right chevron icon"></i>
               </div>
             </div>
           </div>

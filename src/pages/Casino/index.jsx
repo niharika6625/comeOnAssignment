@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../assets/css/styles.css";
 import { ROUTE_PATH } from "../../helper/constants";
-import './casino.css';
 
 const { LOGIN, INGAME } = ROUTE_PATH;
 
@@ -85,7 +84,6 @@ const Casino = () => {
     setSelectedCategory(catId);
   };
 
-
   return (
     <div className="casino">
       <div className="ui grid centered">
@@ -116,7 +114,7 @@ const Casino = () => {
           </div>
         </div>
         <div className="four wide column">
-          <div className="search ui small icon input ">
+          <div className="search ui small icon input">
             <input
               type="text"
               placeholder="Search Game"
@@ -166,13 +164,14 @@ const Casino = () => {
             {/* category item template */}
 
             {filteredCategories.map((category) => (
-              
-              <div className={`category item ${
-                category.id === selectedCategory ? "active" : ""
-              }`}>
+              <div
+                className={`category item ${
+                  category.id === selectedCategory ? "active" : ""
+                }`}
+              >
                 <div className="content">
-                {console.log('Category ID:', category.id)}
-                {console.log('Selected Category:', selectedCategory)}
+                  {console.log("Category ID:", category.id)}
+                  {console.log("Selected Category:", selectedCategory)}
                   <div
                     className={`header`}
                     onClick={() => handleCategorySelect(category.id)}
