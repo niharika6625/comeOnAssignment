@@ -113,6 +113,7 @@ const Login = () => {
                 <button type="submit" disabled={isSubmitting}>
                   {isSubmitting ? "Logging in..." : "Login"}
                 </button>
+                <i class="right chevron icon"></i>
               </div>
             </div>
           </div>

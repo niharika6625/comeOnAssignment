@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../assets/css/styles.css";
 import { ROUTE_PATH } from "../../helper/constants";
+import './casino.css';
 
 const { LOGIN, INGAME } = ROUTE_PATH;
 
@@ -10,7 +11,7 @@ const Casino = () => {
   const [gamesData, setGamesData] = useState([]);
   const [categoriesData, setCategoriesData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState(0);
 
   const navigate = useNavigate();
 
@@ -84,6 +85,7 @@ const Casino = () => {
     setSelectedCategory(catId);
   };
 
+
   return (
     <div className="casino">
       <div className="ui grid centered">
@@ -135,7 +137,7 @@ const Casino = () => {
             {filteredGames.map((game) => (
               <div className="game item">
                 <div className="ui small image">
-                  <img src="" alt="game-icon" />
+                  <img src={game.icon} alt="game-icon" />
                 </div>
                 <div className="content">
                   <div className="header">
@@ -164,12 +166,15 @@ const Casino = () => {
             {/* category item template */}
 
             {filteredCategories.map((category) => (
-              <div className="category item">
+              
+              <div className={`category item ${
+                category.id === selectedCategory ? "active" : ""
+              }`}>
                 <div className="content">
+                {console.log('Category ID:', category.id)}
+                {console.log('Selected Category:', selectedCategory)}
                   <div
-                    className={`header ${
-                      category.id === setSelectedCategory ? "active" : ""
-                    }`}
+                    className={`header`}
                     onClick={() => handleCategorySelect(category.id)}
                   >
                     {category.name}
