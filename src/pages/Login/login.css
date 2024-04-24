@@ -12,6 +12,7 @@
     margin-left: 360px;
     margin-right: 360px
 }
+
 .login .error.message{
     font-size: 8px;
 }
@@ -24,20 +25,21 @@
     cursor: pointer;
     border: none;
     border-radius: 25px;
-    background-color: #8EB50D;
+    background-color: var(--primary-color-custom);
     color: white;
     font-weight:bold;
     transition: background-color 0.3s ease;
 }
 
 .login-button:hover {
-    background-color: #a1c225;
-  }
+    background-color: var(--primary-color-light-custom);
+}
 
 .login-button .right.chevron.icon {
     margin-left: 8px;
     color: white;
 }
+
 .login-button i{
     width: max-content;
     margin-right: 0px;

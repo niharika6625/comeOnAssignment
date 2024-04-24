@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import "../../assets/css/styles.css";
 import { ROUTE_PATH, API_PATH } from "../../helper/constants";
 import fetchData from "../../services/api.js";
+
 const { LOGIN, INGAME } = ROUTE_PATH;
 const { CATEGORY_API, GAMES_API, LOGOUT_API } = API_PATH;
 
 const Casino = () => {
+  const localAuth = localStorage.getItem("auth");
   const [userData, setUserData] = useState({});
   const [gamesData, setGamesData] = useState([]);
   const [categoriesData, setCategoriesData] = useState([]);
@@ -20,11 +22,8 @@ const Casino = () => {
   };
 
   useEffect(() => {
-    const userData = localStorage.getItem("auth")
-      ? JSON.parse(localStorage.getItem("auth"))
-      : null;
+    const userData = localAuth ? JSON.parse(localAuth) : null;
     setUserData(userData);
-
     const fetchDataLoad = async () => {
       fetchData(GAMES_API)
         .then((res) => {
@@ -46,9 +45,7 @@ const Casino = () => {
   }, []);
 
   const handleLogout = async () => {
-    const userData = localStorage.getItem("auth")
-      ? JSON.parse(localStorage.getItem("auth"))
-      : null;
+    const userData = localAuth ? JSON.parse(localAuth) : null;
     fetchData(LOGOUT_API, "POST", { username: userData.username })
       .then(async (res) => {
         localStorage.setItem("isLogin", false);
