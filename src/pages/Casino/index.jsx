@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../assets/css/styles.css";
-import { ROUTE_PATH } from "../../helper/constants";
-
+import { ROUTE_PATH, API_PATH } from "../../helper/constants";
+import fetchData from "../../services/api.js";
 const { LOGIN, INGAME } = ROUTE_PATH;
+const { CATEGORY_API, GAMES_API, LOGOUT_API } = API_PATH;
 
 const Casino = () => {
   const [userData, setUserData] = useState({});
@@ -23,50 +24,73 @@ const Casino = () => {
       ? JSON.parse(localStorage.getItem("auth"))
       : null;
     setUserData(userData);
-  }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const gamesResponse = await fetch("http://localhost:3001/games");
-        const gamesData = await gamesResponse.json();
-        setGamesData(gamesData);
+    const fetchDataLoad = async () => {
+      fetchData(GAMES_API)
+        .then((res) => {
+          setGamesData(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
-        const categoriesResponse = await fetch(
-          "http://localhost:3001/categories"
-        );
-        const categoriesData = await categoriesResponse.json();
-        setCategoriesData(categoriesData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+      fetchData(CATEGORY_API)
+        .then((res) => {
+          setCategoriesData(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     };
-    fetchData();
+    fetchDataLoad();
   }, []);
 
   const handleLogout = async () => {
-    try {
-      const userData = localStorage.getItem("auth")
-        ? JSON.parse(localStorage.getItem("auth"))
-        : null;
-      const response = await fetch("http://localhost:3001/logout", {
-        method: "post",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username: userData.username }),
-      });
-      if (response.ok) {
+    const userData = localStorage.getItem("auth")
+      ? JSON.parse(localStorage.getItem("auth"))
+      : null;
+    fetchData(LOGOUT_API, "POST", { username: userData.username })
+      .then(async (res) => {
         localStorage.setItem("isLogin", false);
         navigate(LOGIN);
-      } else {
-        throw new Error("Failed to Logout!");
-      }
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
+      })
+      .catch((err) => {
+        console.error("Logout error:", err);
+      });
   };
+  // const response = await fetch("http://localhost:3001/logout", {
+  //   method: "post",
+  //   headers: {
+  //     Accept: "application/json",
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify({ username: userData.username }),
+  // });
+  //   if (response.ok) {
+  //     localStorage.setItem("isLogin", false);
+  //     navigate(LOGIN);
+  //   } else {
+  //     throw new Error("Failed to Logout!");
+  //   }
+  // } catch (error) {
+  //   console.error("Logout error:", error);
+  // }
+
+  // const handleLogin = async () => {
+  //   fetchData(LOGIN_API, 'POST', formData).then(async(res) => {
+  //     localStorage.setItem(
+  //       "auth",
+  //       JSON.stringify({
+  //         username: formData.username,
+  //         ...res.data.player,
+  //       })
+  //     );
+  //     navigate(CASINO);
+  //   }).catch(async(err) => {
+  //     setIsSubmitting(false);
+  //     setError(err.response.data.error);
+  //   })
+  // };
 
   const filteredGames = gamesData
     .filter((game) =>
@@ -96,12 +120,11 @@ const Casino = () => {
                 src={userData.avatar}
                 alt="avatar"
               />
-
               <div className="content">
                 <div className="header">
-                  <b className="name"></b>
+                  <b className="name">{userData.name}</b>
                 </div>
-                <div className="description event"></div>
+                <div className="description event">{userData.event}</div>
               </div>
             </div>
             {/* end player item template */}
@@ -132,8 +155,8 @@ const Casino = () => {
           <div className="ui relaxed divided game items links">
             {/* game item template */}
 
-            {filteredGames.map((game) => (
-              <div className="game item">
+            {filteredGames.map((game, index) => (
+              <div className="game item" key={index}>
                 <div className="ui small image">
                   <img src={game.icon} alt="game-icon" />
                 </div>
@@ -163,15 +186,14 @@ const Casino = () => {
           <div className="ui selection animated list category items">
             {/* category item template */}
 
-            {filteredCategories.map((category) => (
+            {filteredCategories.map((category, index) => (
               <div
+                key={index}
                 className={`category item ${
                   category.id === selectedCategory ? "active" : ""
                 }`}
               >
                 <div className="content">
-                  {console.log("Category ID:", category.id)}
-                  {console.log("Selected Category:", selectedCategory)}
                   <div
                     className={`header`}
                     onClick={() => handleCategorySelect(category.id)}

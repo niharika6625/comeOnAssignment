@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import "./login.css";
-import { ROUTE_PATH } from "../../helper/constants";
-
+import { ROUTE_PATH, API_PATH } from "../../helper/constants";
+import fetchData from '../../services/api.js';
 const { CASINO } = ROUTE_PATH;
-
+const { LOGIN_API } =  API_PATH;
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -29,33 +29,19 @@ const Login = () => {
   };
 
   const handleLogin = async () => {
-    try {
-      const response = await fetch("http://localhost:3001/login", {
-        method: "post",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem(
-          "auth",
-          JSON.stringify({
-            username: formData.username,
-            ...data.player,
-          })
-        );
-        navigate(CASINO);
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.error);
-      }
-    } catch (error) {
+    fetchData(LOGIN_API, 'POST', formData).then(async(res) => {
+      localStorage.setItem(
+        "auth",
+        JSON.stringify({
+          username: formData.username,
+          ...res.data.player,
+        })
+      );
+      navigate(CASINO);
+    }).catch(async(err) => {
       setIsSubmitting(false);
-      setError(error.message);
-    }
+      setError(err.response.data.error);
+    })
   };
 
   const handleSubmit = async (e) => {
@@ -116,9 +102,9 @@ const Login = () => {
             {error && <div className="ui error message">{error}</div>}
             <div className="field">
               <div className="ui icon input">
-                <button type="submit" disabled={isSubmitting} class="login-button">
+                <button type="submit" disabled={isSubmitting} className="login-button">
                   <span>{isSubmitting ? "Logging in..." : "Login"}</span>
-                  <i class="right chevron icon"></i>
+                  <i className="right chevron icon"></i>
                 </button>
               </div>
             </div>

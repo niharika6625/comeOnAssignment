@@ -12,13 +12,14 @@
 .login-button {
     display: flex;
     align-items: center;
-    padding: 6px 0px 6px 12px;
-  }
-  
-  .login-button span {
-    flex: 1; /* Take up remaining space */
-  }
-  
-  .right.chevron.icon {
+    padding: 6px;
+}
+
+.login-button .right.chevron.icon {
     margin-left: 8px;
-  }
+    color: grey;
+}
+.login-button i{
+    width: max-content;
+    margin-right: 0px;
+}
