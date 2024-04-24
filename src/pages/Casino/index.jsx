@@ -58,39 +58,6 @@ const Casino = () => {
         console.error("Logout error:", err);
       });
   };
-  // const response = await fetch("http://localhost:3001/logout", {
-  //   method: "post",
-  //   headers: {
-  //     Accept: "application/json",
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({ username: userData.username }),
-  // });
-  //   if (response.ok) {
-  //     localStorage.setItem("isLogin", false);
-  //     navigate(LOGIN);
-  //   } else {
-  //     throw new Error("Failed to Logout!");
-  //   }
-  // } catch (error) {
-  //   console.error("Logout error:", error);
-  // }
-
-  // const handleLogin = async () => {
-  //   fetchData(LOGIN_API, 'POST', formData).then(async(res) => {
-  //     localStorage.setItem(
-  //       "auth",
-  //       JSON.stringify({
-  //         username: formData.username,
-  //         ...res.data.player,
-  //       })
-  //     );
-  //     navigate(CASINO);
-  //   }).catch(async(err) => {
-  //     setIsSubmitting(false);
-  //     setError(err.response.data.error);
-  //   })
-  // };
 
   const filteredGames = gamesData
     .filter((game) =>

@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import "./login.css";
 import { ROUTE_PATH, API_PATH } from "../../helper/constants";
-import fetchData from '../../services/api.js';
+import fetchData from "../../services/api.js";
 const { CASINO } = ROUTE_PATH;
-const { LOGIN_API } =  API_PATH;
+const { LOGIN_API } = API_PATH;
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -29,19 +29,21 @@ const Login = () => {
   };
 
   const handleLogin = async () => {
-    fetchData(LOGIN_API, 'POST', formData).then(async(res) => {
-      localStorage.setItem(
-        "auth",
-        JSON.stringify({
-          username: formData.username,
-          ...res.data.player,
-        })
-      );
-      navigate(CASINO);
-    }).catch(async(err) => {
-      setIsSubmitting(false);
-      setError(err.response.data.error);
-    })
+    fetchData(LOGIN_API, "POST", formData)
+      .then(async (res) => {
+        localStorage.setItem(
+          "auth",
+          JSON.stringify({
+            username: formData.username,
+            ...res.data.player,
+          })
+        );
+        navigate(CASINO);
+      })
+      .catch(async (err) => {
+        setIsSubmitting(false);
+        setError(err.response.data.error);
+      });
   };
 
   const handleSubmit = async (e) => {
@@ -67,6 +69,7 @@ const Login = () => {
   return (
     <div className="login" style={{ display: "block" }}>
       <div className="ui grid centered">
+        <h4 className="game-headline">Game Ready? Let's Go!</h4>
         <form onSubmit={handleSubmit}>
           <div className="fields">
             <div className="required field">
@@ -102,7 +105,11 @@ const Login = () => {
             {error && <div className="ui error message">{error}</div>}
             <div className="field">
               <div className="ui icon input">
-                <button type="submit" disabled={isSubmitting} className="login-button">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="login-button"
+                >
                   <span>{isSubmitting ? "Logging in..." : "Login"}</span>
                   <i className="right chevron icon"></i>
                 </button>

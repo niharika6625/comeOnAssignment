@@ -1,3 +1,10 @@
+.game-headline{
+    margin-top: 70px;
+    font-family: "Helvetica Neue";
+    color: #444;
+    font-weight: bold;
+}
+
 .login .error {
     font-size: 8px;
     color: red;
@@ -12,12 +19,24 @@
 .login-button {
     display: flex;
     align-items: center;
-    padding: 6px;
+    margin-top: 10px;
+    padding: 8px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 25px;
+    background-color: #8EB50D;
+    color: white;
+    font-weight:bold;
+    transition: background-color 0.3s ease;
 }
+
+.login-button:hover {
+    background-color: #a1c225;
+  }
 
 .login-button .right.chevron.icon {
     margin-left: 8px;
-    color: grey;
+    color: white;
 }
 .login-button i{
     width: max-content;
