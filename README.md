@@ -18,8 +18,14 @@ password: rock
 ```
 
 ## Installation
-Step1: npm i -to install dependencies.
-Step2: npm run start -to start the development server.
+To install dependencies
+```
+npm i 
+``` 
+To start the development server
+```
+npm run start
+``` 
 
 ## Usage
 Visit http://localhost:3000 to view the frontend application.
